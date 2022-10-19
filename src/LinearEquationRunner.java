@@ -21,14 +21,19 @@ public class LinearEquationRunner {
         int y2 = Integer.parseInt(coord2.substring(coord2.indexOf(",")+2,coord2.length()-1));
 
         if (x1 == x2){
-            System.out.println("You cannot have the same x values." + "\nPlease try again.");
+            System.out.println();
+            System.out.println("These points are on a vertical line: x = " + x1);
             System.exit(0);
         }
 
-        LinearEquation linearEquation = new LinearEquation(x1,x2,y1,y2);
+        LinearEquation linearEquation = new LinearEquation(x1,y1,x2,y2);
         System.out.println();
         linearEquation.lineInfo();
 
-
+        System.out.println();
+        System.out.print("Enter a value for x: ");
+        String coord3 = linearEquation.coordinateForX(scan.nextDouble());
+        System.out.println();
+        System.out.println("The point on the line is " + coord3);
     }
 }
