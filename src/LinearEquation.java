@@ -5,8 +5,6 @@ public class LinearEquation {
     private int y2;
 
 /* Creates a LinearEquation object */
-/* PRECONDITION: x1 and x2 are NOT equal (client programs are responsible for ensuring
-   this precondition is not violated)*/
     public LinearEquation(int x1, int y1, int x2, int y2){
         this.x1 = x1;
         this.x2 = x2;
@@ -15,9 +13,7 @@ public class LinearEquation {
     }
 
     /* "Helper" method for use elsewhere in your methods; returns the value toRound rounded
-    to the nearest hundredth
-
-    HINT:  the Math.round method can help with this!*/
+    to the nearest hundredth*/
     public double roundedToHundredth(double toRound){
         return Math.round(toRound*100)/100.0;
     }
@@ -49,33 +45,36 @@ public class LinearEquation {
         int yDiff = y2-y1;
 
         if (slope() == 1) {
-            m = "";
+            m = ""; //if slope is 1, only x will be outputted
         } else if (slope() == -1) {
-            m = "-";
+            m = "-"; //if slope is -1, only -x will be outputted
         } else{
-            if (slope() % 1 == 0) {
-                m = Integer.toString((int)slope());
+            if (slope() % 1 == 0) { //checks if the slope is a whole number/integer
+                m = Integer.toString((int)slope()); //converts the slope into a string
             } else {
-                if ((xDiff > 0 && yDiff > 0) || (xDiff < 0 && yDiff < 0)) {
-                    m = Math.abs(yDiff) + "/" + Math.abs(xDiff);
-                } else if ((xDiff > 0 && yDiff < 0) || (xDiff < 0 && yDiff > 0)) {
+                if ((xDiff > 0 && yDiff > 0) || (xDiff < 0 && yDiff < 0)) { //checks if both differences are both positive or negative;if so, then the slope will be positive
+                    m = Math.abs(yDiff) + "/" + Math.abs(xDiff); //takes the absolute value of both differences to avoid negatives on both numbers Ex: -1/-2
+                } else if ((xDiff > 0 && yDiff < 0) || (xDiff < 0 && yDiff > 0)) { //checks if one of the differences are negative and if one is positive;if so, then the slope will be negative
                     m = "-" + Math.abs(yDiff) + "/" + Math.abs(xDiff);
                 }
             }
         }
 
+        //The use of .toString is used to convert integers/doubles into strings
         if (yIntercept() == 0){
-            b = "";
+            b = ""; //Sets y-intercept as an empty string if y-intercept is 0
         }
         else{
-            if (yIntercept() < 0){
-                if (slope() == 0){
-                    if (yIntercept()%1 == 0){
+            if (yIntercept() < 0){ //checks if y-intercept is negative
+                if (slope() == 0){ //checks if slope exists
+                    //when slope does not exist there will be no space in between the y-intercept and the sign
+                    if (yIntercept()%1 == 0){ //if slope exists, then it will check whether the y-intercept is an integer
                         b = "-" + Integer.toString(Math.abs((int)yIntercept()));
                     }else {
                         b = "-" + Double.toString(Math.abs(yIntercept()));
                     }
                 }else {
+                    //when slope exists there will be a space in between the y-intercept and the sign
                     if (yIntercept()%1 == 0){
                         b = "- " + Integer.toString(Math.abs((int)yIntercept()));
                     }else {
@@ -85,13 +84,13 @@ public class LinearEquation {
             }
             else {
                 if (slope() == 0){
-                    if (yIntercept()%1 == 0){
+                    if (yIntercept()%1 == 0){ //if slope does not exist there will be no sign, symbolizing that the y-intercept is positive
                         b = Integer.toString((int)yIntercept());
                     }else {
                         b = Double.toString(yIntercept());
                     }
                 } else {
-                    if (yIntercept()%1 == 0){
+                    if (yIntercept()%1 == 0){ //if slope does exist there will be a positive sign in front of the y-intercept
                         b = "+ " + Integer.toString((int)yIntercept());
                     }else {
                         b = "+ " + Double.toString(yIntercept());
@@ -100,7 +99,7 @@ public class LinearEquation {
             }
         }
 
-        if (slope() == 0){
+        if (slope() == 0){ //returns the correct format based on whether if slope exists or not
             return "y = " + b;
         }else{
             return "y = " + m + "x " + b;
@@ -109,26 +108,20 @@ public class LinearEquation {
 
     /* Returns a String of the coordinate point on the line that has the given x value, with
    both x and y coordinates as decimals to the nearest hundredth, e.g (-5.0, 6.75) */
-    public String coordinateForX(double xValue){ return "(" + xValue + ", " + roundedToHundredth(((slope()*xValue)+yIntercept())) + ")"; }
+    public String coordinateForX(double xValue){
+        return "(" + roundedToHundredth(xValue) + ", " + roundedToHundredth(((slope()*xValue)+yIntercept())) + ")";
+    }
 
     /* Returns a string that includes all information about the linear equation, each on
-   separate lines:
-     - The original points: (x1, y1) and (x2, y2)
-     - The equation of the line in y = mx + b format (using equation() method)
-     - The slope of the line, as a decimal (using slope() method)
-     - The y-intercept of the line (using yIntercept() method)
-     - The distance between the two points (using distance() method)
-
-  This method should call all other appropriate methods to get the info it needs:
-  equation(), slope(), yIntercept(), distance().
-
+   separate lines. Concats string variable and returns it.
   */
-    public void lineInfo(){
-        System.out.println("The two points are: (" + x1 + ", " + y1 + ") and (" + x2 + ", " + y2 + ")" );
-        System.out.println("The equation of the line between these points is: " + equation());
-        System.out.println("The slope of this line is: " + slope());
-        System.out.println("The y-intercept of the line is: " + yIntercept());
-        System.out.println("The distance between the two points is: " + distance());
+    public String lineInfo(){
+        String str = "The two points are: (" + x1 + ", " + y1 + ") and (" + x2 + ", " + y2 + ")\n";
+        str += ("The equation of the line between these points is: " + equation() + "\n");
+        str += ("The slope of this line is: " + slope() + "\n");
+        str += ("The y-intercept of the line is: " + yIntercept() + "\n");
+        str += ("The distance between the two points is: " + distance());
+        return str;
     }
 }
 
